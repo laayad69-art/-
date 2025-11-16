@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Clean Mind — كامل (ذكريات، استعادة، إرشاد)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-dark:#070809;
+    --panel: rgba(255,255,255,0.03);
+    --muted:#9aa4b2;
+    --fire1:#ff5f3d;
+    --fire2:#ff9a3d;
+    --gold:#ffd166;
+    --accent:#00e0b8;
+    --glass: rgba(255,255,255,0.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:
+    radial-gradient(900px 450px at 8% 8%, rgba(255,93,93,0.04), transparent),
+    linear-gradient(180deg,var(--bg-dark),#0b0b0d); color:#fff; -webkit-font-smoothing:antialiased;}
+  .app {min-height:100vh; display:flex; flex-direction:column; align-items:stretch;}
+  header.appbar {display:flex; align-items:center; justify-content:space-between; padding:12px 18px; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03)); border-bottom:1px solid rgba(255,255,255,0.02); position:sticky; top:0; z-index:60;}
+  .brand {display:flex; gap:12px; align-items:center}
+  .logo {width:56px;height:56px;border-radius:12px;display:grid;place-items:center;font-weight:900;color:#111;background:linear-gradient(135deg,var(--fire1),#7c3aed);box-shadow:0 12px 36px rgba(0,0,0,0.6); font-size:20px; background-size:cover; background-position:center}
+  .app-title {font-size:18px; margin:0}
+  .user-greet {font-size:13px;color:var(--muted); margin-top:2px; display:flex; gap:8px; align-items:center}
+  .user-name {color:var(--accent); font-weight:800}
+  nav {display:flex; gap:8px; align-items:center}
+  nav button {background:transparent;border:1px solid rgba(255,255,255,0.04); color:var(--muted); padding:8px 12px; border-radius:12px; cursor:pointer; font-weight:700}
+  nav button.active {background:linear-gradient(90deg,var(--fire1),var(--fire2)); color:#100; border:none; box-shadow:0 10px 28px rgba(255,90,60,0.12)}
+  .main {display:grid; grid-template-columns:360px 1fr; gap:22px; padding:20px; align-items:start; max-width:1200px; margin:20px auto; width:100%}
+  @media(max-width:980px){ .main{grid-template-columns:1fr; padding:12px} nav{flex-wrap:wrap} }
+  .panel {background:var(--panel); padding:16px; border-radius:12px; box-shadow:0 16px 48px rgba(0,0,0,0.6);}
+  .streak-box {display:flex; gap:12px; align-items:center}
+  .fire-circle {width:110px;height:110px;border-radius:999px;display:grid;place-items:center;position:relative; box-shadow:0 18px 50px rgba(0,0,0,0.6); background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03), transparent);}
+  .flame-core {width:70px;height:70px;border-radius:999px; background:
+    radial-gradient(circle at 30% 30%, var(--fire2), transparent 30%),
+    radial-gradient(circle at 70% 70%, var(--fire1), transparent 35%); filter:blur(6px); animation:burn 1.4s infinite linear;}
+  @keyframes burn{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.03)}100%{transform:translateY(0) scale(1)}}
+  .streak-stats h2{margin:0;font-size:30px}
+  .streak-stats p{margin:6px 0 0;color:var(--muted); font-size:12px}
+  .controls {margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
+  .btn {padding:9px 12px;border-radius:12px;border:none;cursor:pointer;font-weight:800}
+  .btn-primary {background:linear-gradient(90deg,var(--fire1),var(--fire2)); color:#100}
+  .btn-ghost {background:transparent;border:1px solid rgba(255,255,255,0.04); color:var(--muted); font-weight:700}
+  .small {font-size:13px;color:var(--muted); margin-top:10px}
+  .content {display:flex; flex-direction:column; gap:14px}
+  .hero {padding:14px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02))}
+  .quote {color:var(--muted); margin-top:6px}
+  .xp-row {display:flex; align-items:center; gap:12px; margin-top:12px}
+  .xp-bar {flex:1; background:rgba(255,255,255,0.04); border-radius:10px; overflow:hidden; height:14px; position:relative}
+  .xp-fill {height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--gold)); transition:width .6s ease}
+  .xp-meta {font-size:13px; color:var(--muted); min-width:160px; text-align:left}
+  .badges {display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  .badge {padding:8px 10px; border-radius:10px; background:rgba(255,255,255,0.02); font-weight:700; font-size:13px; color:var(--muted); border:1px solid rgba(255,255,255,0.02)}
+  .badge.earned {background:linear-gradient(90deg,var(--gold),#ffd27a); color:#120; box-shadow:0 10px 30px rgba(255,200,50,0.06)}
+  .modal {position:fixed; inset:0; display:grid; place-items:center; background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85)); z-index:80; visibility:hidden; opacity:0; transition:all .28s ease}
+  .modal.show{visibility:visible; opacity:1}
+  .modal .card {width:92%; max-width:520px; padding:18px;border-radius:12px; text-align:center; background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,0,0,0.03)); box-shadow:0 40px 100px rgba(0,0,0,0.8)}
+  #confettiCanvas{position:fixed; inset:0; pointer-events:none; z-index:85; display:none}
+  .fade-in { animation:fadeUp .7s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+  /* Memories UI */
+  .memories-list { max-height:420px; overflow:auto; margin-top:10px; padding-right:6px }
+  .memory-item { padding:10px; border-radius:10px; background:rgba(255,255,255,0.02); margin-bottom:8px; border:1px solid rgba(255,255,255,0.03) }
+  .memory-meta { color:var(--muted); font-size:12px; margin-bottom:6px }
+  .mood { padding:4px 8px; border-radius:8px; font-weight:700; font-size:12px; display:inline-block; margin-left:6px }
+  .mood.happy { background:rgba(0,200,150,0.12); color:#00e0b8 }
+  .mood.neutral { background:rgba(255,255,255,0.03); color:var(--muted) }
+  .mood.sad { background:rgba(255,80,80,0.08); color:#ff6b6b }
+  .mem-actions { margin-top:8px; display:flex; gap:8px; justify-content:flex-end }
+  .qa-box { margin-top:12px; padding:12px; border-radius:10px; background:rgba(255,255,255,0.02) }
+  input, textarea, select { font-family:inherit; color:inherit; background:transparent; border:1px solid rgba(255,255,255,0.06); padding:8px; border-radius:8px; width:100% }
+  textarea { min-height:80px; resize:vertical }
+
+  /* ranks grid */
+  .ranks-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:12px }
+  .rank-card { padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); box-shadow:0 10px 30px rgba(0,0,0,0.5); position:relative }
+  .rank-card.highlight { outline:3px solid rgba(255,215,102,0.08); transform:translateY(-6px) }
+
+  /* settings logos */
+  .settings-row { display:flex; gap:12px; align-items:center; margin-top:8px; flex-wrap:wrap }
+  .logo-preview { width:64px; height:64px; border-radius:10px; background:linear-gradient(135deg,var(--fire1),var(--fire2)); display:grid; place-items:center; font-weight:900; color:#111; box-shadow:0 6px 18px rgba(0,0,0,0.6); background-size:cover; background-position:center }
+</style>
+</head>
+<body>
+<div class="app" id="appRoot">
+  <header class="appbar fade-in" role="banner">
+    <div class="brand" aria-hidden="false">
+      <div class="logo" id="logoEl">CM</div>
+      <div>
+        <div class="app-title">Clean Mind</div>
+        <div class="user-greet" id="headerGreet">
+          <div class="user-prefix" id="headerPrefix">أهلاً</div>
+          <div class="user-name" id="headerName">بك</div>
+          <div style="font-size:12px;color:var(--muted);margin-right:8px" id="headerTitle"></div>
+        </div>
+      </div>
+    </div>
+    <nav role="navigation" aria-label="القوائم">
+      <button id="navChallenge" class="active" onclick="showTab('challenge')">التحدي</button>
+      <button id="navRanks" onclick="showTab('ranks')">الألقاب</button>
+      <button id="navStats" onclick="showTab('stats')">الإحصائيات</button>
+      <button id="navMemories" onclick="showTab('memories')">ذكريات</button>
+      <button id="navGuide" onclick="showTab('guide')">📘 الإرشاد</button>
+      <button id="navSettings" onclick="showTab('settings')">الإعدادات</button>
+    </nav>
+  </header>
+
+  <main class="main fade-in" role="main" aria-live="polite">
+    <!-- LEFT PANEL -->
+    <aside class="panel" aria-label="لوحة التحكم">
+      <div class="streak-box">
+        <div class="fire-circle" aria-hidden="true"><div class="flame-core" id="flameCore"></div></div>
+        <div class="streak-stats">
+          <h2 id="daysDisplay">0</h2>
+          <p id="streakSub">أيام دون الإباحية</p>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div id="timeDisplay" style="font-weight:800; font-size:14px">لم تبدأ بعد</div>
+        <div class="small">البيانات محفوظة محليًا — الذاكرة والذكريات متاحة دائمًا</div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-meta" id="xpMeta">XP: 0 • مستوى 1</div>
+        <div class="xp-bar" title="تقدّم الـ XP">
+          <div class="xp-fill" id="xpFill"></div>
+        </div>
+      </div>
+
+      <div class="badges" id="badgeList" aria-live="polite" style="margin-top:8px"></div>
+
+      <div class="controls">
+        <button class="btn btn-primary" id="btnStartResume" onclick="startOrResume()">ابدأ / استأنف</button>
+        <button class="btn btn-ghost" id="btnPause" onclick="togglePause()">أوقف مؤقتًا</button>
+        <button class="btn btn-ghost" onclick="promptSetName(true)">تعيين اسم</button>
+      </div>
+
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn btn-ghost" id="btnRestore" onclick="attemptOfferRestore()">استعادة 🔁</button>
+        <div style="display:flex; flex-direction:column; justify-content:center">
+          <div class="small">فرص الاستعادة المتبقية: <strong id="recoveriesLeft">3</strong></div>
+          <div class="small">أقرب تاريخ للاستعادة: <span id="nextRestoreDate">--</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="createMomentMemory()">اضف ذاكرة لحظية</button>
+        <button class="btn btn-ghost" onclick="openMemoriesPanel()">عرض الذكريات</button>
+      </div>
+    </aside>
+
+    <!-- RIGHT CONTENT -->
+    <section class="content">
+      <!-- CHALLENGE -->
+      <div id="challenge" class="panel hero" role="region" aria-label="التحدي">
+        <h3 id="welcomeTitle">مرحبًا بك في رحلة Clean Mind</h3>
+        <div class="quote" id="dailyQuote">كل يوم بدون محتوى محظور هو انتصار — ابدأ بخطوة بسيطة الآن.</div>
+
+        <div style="display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap;">
+          <div style="flex:1">
+            <div style="font-size:13px;color:var(--muted)">هدف اليوم</div>
+            <div id="todayGoal" style="margin-top:8px;color:#fff">لا يوجد هدف محدد.</div>
+            <div style="margin-top:8px; display:flex; gap:8px">
+              <button class="btn btn-ghost" onclick="setGoal()">تعيين هدف</button>
+              <button class="btn btn-ghost" onclick="clearGoal()">مسح الهدف</button>
+            </div>
+
+            <div style="margin-top:10px">
+              <h4 style="margin:8px 0 4px">أدوات مساعدة</h4>
+              <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap">
+                <button class="btn btn-ghost" onclick="doBreath()">تمارين تنفّس</button>
+                <button class="btn btn-ghost" onclick="doDistract()">خطة إلهاء</button>
+                <button class="btn btn-ghost" onclick="openCelebration()">احتفال الآن</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:320px">
+            <div style="font-size:13px;color:var(--muted)">مراقبة يومية</div>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center">
+              <div style="flex:1">
+                <div style="font-size:13px;color:var(--muted)">أدخل شعورك الآن</div>
+                <select id="quickMood" style="margin-top:6px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.06)"><option value="">-- اختر --</option><option value="happy">😊 سعيد</option><option value="neutral">😐 محايد</option><option value="sad">😔 حزين</option></select>
+              </div>
+              <div>
+                <button class="btn btn-primary" onclick="saveQuickMood()">حفظ</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <div style="font-size:13px;color:var(--muted)">سجل سريع</div>
+              <div style="margin-top:8px"><input id="quickNote" placeholder="ملاحظة سريعة..." /></div>
+              <div style="margin-top:8px"><button class="btn btn-ghost" onclick="saveQuickNote()">حفظ الملاحظة</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANKS -->
+      <div id="ranks" class="panel" style="display:none" role="region" aria-label="الألقاب">
+        <h3>الألقاب</h3>
+        <div id="currentRankBox" style="margin-top:10px"></div>
+        <div class="ranks-grid" id="ranksGrid"></div>
+      </div>
+
+      <!-- STATS -->
+      <div id="stats" class="panel" style="display:none" role="region" aria-label="الإحصائيات">
+        <h3>الإحصائيات</h3>
+        <div style="margin-top:12px; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px">
+          <div class="panel" style="padding:10px">
+            <div style="color:var(--muted)">أيام النقاء الحالية</div>
+            <div style="font-weight:800;font-size:18px" id="statCurrent">0</div>
+          </div>
+          <div class="panel" style="padding:10px">
+            <div style="color:var(--muted)">أطول ستريك</div>
+            <div style="font-weight:800;font-size:18px" id="statBest">0</div>
+          </div>
+          <div class="panel" style="padding:10px">
+            <div style="color:var(--muted)">إجمالي الأيام النظيفة</div>
+            <div style="font-weight:800;font-size:18px" id="statTotal">0</div>
+          </div>
+          <div class="panel" style="padding:10px">
+            <div style="color:var(--muted)">عدد الانتكاسات</div>
+            <div style="font-weight:800;font-size:18px" id="statRelapses">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMORIES -->
+      <div id="memories" class="panel" style="display:none" role="region" aria-label="ذكريات التحدي">
+        <h3>ذكريات التحدي</h3>
+        <div style="display:flex; gap:12px; margin-top:10px; align-items:flex-start; flex-wrap:wrap;">
+          <div style="flex:1; min-width:280px">
+            <label style="display:block;margin-bottom:6px;color:var(--muted)">أضف ذكرى جديدة</label>
+            <input id="memTag" placeholder="وسم (مثلاً: نجاح، محنة)" />
+            <select id="memMood" style="margin-top:8px">
+              <option value="happy">😊 سعيد</option>
+              <option value="neutral">😐 محايد</option>
+              <option value="sad">😔 حزين</option>
+            </select>
+            <textarea id="memText" placeholder="اكتب ملاحظتك عن يومك أو التحدي..." style="margin-top:8px"></textarea>
+            <div style="display:flex; gap:8px; margin-top:8px">
+              <button class="btn btn-primary" onclick="addMemory()">حفظ الذكرى</button>
+              <button class="btn btn-ghost" onclick="clearMemoryForm()">إفراغ النموذج</button>
+            </div>
+            <div style="margin-top:12px">
+              <button class="btn btn-ghost" onclick="exportMemories()">تصدير الذكريات</button>
+              <button class="btn btn-ghost" onclick="importMemories()">استيراد ذكريات</button>
+              <button class="btn btn-ghost" onclick="clearAllMemories()">مسح كل الذكريات</button>
+            </div>
+          </div>
+
+          <div style="flex:1.2; min-width:320px">
+            <label style="display:block;margin-bottom:6px;color:var(--muted)">الذكريات المحفوظة</label>
+            <div class="memories-list" id="memoriesList"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="qa-box">
+          <h4 style="margin:0 0 8px">اسأل المدرب</h4>
+          <input id="qaInput" placeholder="اكتب سؤالك (مثلاً: كيف أتعامل مع الرغبة؟)" />
+          <div style="margin-top:8px; display:flex; gap:8px">
+            <button class="btn btn-primary" onclick="askCoach()">اسأل</button>
+            <button class="btn btn-ghost" onclick="clearQA()">إفراغ</button>
+          </div>
+          <div id="qaResponse" style="margin-top:8px;color:var(--accent); font-weight:700"></div>
+        </div>
+      </div>
+
+      <!-- GUIDE -->
+      <div id="guide" class="panel" style="display:none" role="region" aria-label="صفحة الإرشاد">
+        <h3>الإرشاد — دليل سريع</h3>
+        <div style="margin-top:10px">
+          <ol style="color:var(--muted); line-height:1.7">
+            <li>ابدأ بتعيين اسمك ثم اضغط ابدأ.</li>
+            <li>اضبط هدف اليوم واستخدم أدوات الإلهاء والتنفس عند الحاجة.</li>
+            <li>سجل ذكرياتك ومزاجك — هذا يساعد على التعلم والتحسين.</li>
+            <li>إذا كنت بحاجة لاستعادة الستريك استخدم زر الاستعادة (تتوفر فرص محدودة).</li>
+          </ol>
+          <div style="margin-top:12px">
+            <button class="btn btn-primary" onclick="startGuideQuiz()">ابدأ الاختبار التحفيزي</button>
+          </div>
+
+          <div id="guideQuizArea" style="margin-top:12px; display:none">
+            <div id="gQuestion" style="font-weight:700"></div>
+            <div id="gAnswers" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap"></div>
+            <div id="gMessage" style="margin-top:8px;color:var(--accent); font-weight:700"></div>
+            <div style="margin-top:10px"><button class="btn btn-ghost" onclick="finishGuide()">أنهي الإرشاد وعد للتحدي</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="settings" class="panel" style="display:none" role="region" aria-label="الإعدادات">
+        <h3>الإعدادات</h3>
+        <div style="margin-top:8px">
+          <label style="display:block;margin-bottom:6px;color:var(--muted)">تفعيل الإشعارات</label>
+          <select id="notifTime">
+            <option value="08:00">⛅ صباحي -- 08:00</option>
+            <option value="22:00">🌙 مسائي -- 22:00</option>
+          </select>
+        </div>
+
+        <div style="margin-top:12px">
+          <label style="display:block;margin-bottom:6px;color:var(--muted)">تغيير النسق</label>
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <button class="btn btn-ghost" onclick="setTheme('default')">افتراضي</button>
+            <button class="btn btn-ghost" onclick="setTheme('pink')">وردي</button>
+            <button class="btn btn-ghost" onclick="setTheme('dark')">داكن</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <label style="display:block;margin-bottom:6px;color:var(--muted)">شعار الموقع (رفع صورة)</label>
+          <div class="settings-row">
+            <div class="logo-preview" id="logoPreview">CM</div>
+            <div style="flex:1">
+              <input type="file" id="logoUpload" accept="image/*" />
+              <div style="margin-top:8px; display:flex; gap:8px">
+                <button class="btn btn-primary" onclick="applyUploadedLogo()">استخدام الشعار</button>
+                <button class="btn btn-ghost" onclick="removeLogo()">إعادة الشعار الافتراضي</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn btn-ghost" onclick="exportAllData()">تصدير كل البيانات</button>
+          <button class="btn btn-ghost" onclick="importAllData()">استيراد بيانات</button>
+          <button class="btn btn-ghost" onclick="resetAll()">إعادة ضبط كل شيء</button>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="appfoot">تم التصميم بواسطة <strong>إياد علاء</strong> بالتعاون مع <strong>ZMAX</strong> — البيانات محفوظة محليًا</footer>
+</div>
+
+<!-- Visit / Set name popup -->
+<div class="modal visit-popup" id="visitModal" role="dialog" aria-hidden="true">
+  <div class="card">
+    <h2 style="margin:0 0 8px">أهلاً بك في Clean Mind 👋</h2>
+    <p style="color:var(--muted)">اكتب الاسم اللي تحب نناديك بيه.</p>
+    <div style="margin-top:8px; display:flex; gap:8px; justify-content:center">
+      <input id="nameField" placeholder="اكتب اسم مستعار" maxlength="24" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff" />
+      <button class="btn btn-primary" onclick="saveNameFromPopup()">حفظ وابدأ</button>
+    </div>
+    <div style="margin-top:12px; display:flex; gap:10px; justify-content:center">
+      <button class="btn btn-ghost" onclick="skipVisitPopup()">ابدأ التحدي الآن</button>
+      <button class="btn btn-ghost" onclick="dontShowPopupAgain()">لا تظهر مرة أخرى</button>
+    </div>
+  </div>
+</div>
+
+<!-- Celebration modal -->
+<div class="modal" id="celebrationModal" role="dialog" aria-hidden="true">
+  <div class="card">
+    <div class="celebration-gold" id="celebrationTitle" style="font-size:28px;color:var(--gold)">تهانينا!</div>
+    <div id="celebrationText" style="margin-top:12px;color:#fff; opacity:0.95">إنجاز رائع.</div>
+    <div style="margin-top:12px">
+      <button class="btn btn-primary" onclick="closeCelebration()">حسناً</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+<div id="xpToastRoot" style="display:none"></div>
+
+<script>
+/* ---------------------------
+   App logic (improvements / fixes requested)
+   --------------------------- */
+
+/* storage keys */
+const KEY = 'cleanmind_v3_pro_xp';
+const NAME_KEY = 'cleanmind_v3_name';
+const VISIT_KEY = 'cleanmind_v3_first_visit_shown';
+const MEM_KEY = 'cleanmind_memories_v1';
+const LOGO_KEY = 'cleanmind_logo_v1';
+
+/* default state */
+const DEFAULT = {
+  started:false, startTime:null, prevStartTime:null, paused:false, pauseTime:null,
+  gender:'male', recoveriesLeft:3, relapseCount:0, lastRelapse:null, bestStreakDays:0,
+  totalDaysAccum:0, logs:[], goal:'', notifEnabled:false, notifTime:'08:00', lastTick: Date.now(),
+  day3Shown:false, celebratedWeeks:[], lastNotifKey:null,
+  xp:0, level:1, badges:[], rewardLog:[], lastXPGrantDate:null, xpPerDay:10
+};
+
+/* load/save */
+function loadState(){ try{ const raw = localStorage.getItem(KEY); if(!raw) return {...DEFAULT}; return {...DEFAULT, ...JSON.parse(raw)}; }catch(e){ console.error(e); return {...DEFAULT}; } }
+function saveState(){ state.lastTick = Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){console.error('save err',e)} }
+function loadName(){ try{ return localStorage.getItem(NAME_KEY) || ''; }catch(e){return '';} }
+function saveNameLocal(n){ try{ localStorage.setItem(NAME_KEY, n || ''); }catch(e){} }
+
+/* state */
+let state = loadState();
+state.userName = loadName();
+
+/* memories init */
+(function initMemories(){
+  if(!localStorage.getItem(MEM_KEY)) localStorage.setItem(MEM_KEY, JSON.stringify([]));
+})();
+
+/* helper now, friendlyDuration */
+function now(){ return Date.now(); }
+function friendlyDuration(ms){
+  let s = Math.floor(ms/1000);
+  const days = Math.floor(s/(3600*24)); s -= days*3600*24;
+  const hours = Math.floor(s/3600); s -= hours*3600;
+  const minutes = Math.floor(s/60); s -= minutes*60;
+  const seconds = s;
+  return {days,hours,minutes,seconds};
+}
+
+/* RANKS */
+const RANKS = [
+  {id:'r1', title:'المبتدئ القوي 💪', min:0, max:2, desc:'بداية'},
+  {id:'r2', title:'المثابر 🔥', min:3, max:6, desc:'ثبات'},
+  {id:'r3', title:'المقاتل النظيف ⚡', min:7, max:13, desc:'قوة'},
+  {id:'r4', title:'صاحب الإرادة الحديدية ⚔️', min:14, max:29, desc:'إرادة'},
+  {id:'r5', title:'المنتصر الذهبي 🏆', min:30, max:99999, desc:'مستوى احترافي'}
+];
+function getRankByDays(days){ for(const r of RANKS) if(days>=r.min && days<=r.max) return r; return RANKS[0]; }
+
+/* confetti */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const confettiCtx = confettiCanvas.getContext && confettiCanvas.getContext('2d');
+let confettiParticles = [], confettiRunning = false;
+function resizeConfetti(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeConfetti); resizeConfetti();
+function spawnConfetti(amount=80){
+  if(!confettiCtx) return;
+  confettiCanvas.style.display='block';
+  confettiParticles = [];
+  for(let i=0;i<amount;i++){
+    confettiParticles.push({
+      x: Math.random()*confettiCanvas.width,
+      y: Math.random()*-confettiCanvas.height*0.2,
+      vx: (Math.random()-0.5)*6,
+      vy: Math.random()*4+2,
+      size: Math.random()*8+6,
+      rot: Math.random()*360,
+      color: `hsl(${Math.floor(Math.random()*360)}, 75%, 60%)`,
+      spin: (Math.random()-0.5)*0.2
+    });
+  }
+  if(!confettiRunning) confettiLoop();
+}
+function confettiLoop(){
+  if(!confettiCtx) return;
+  confettiRunning = true;
+  confettiCtx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  for(let p of confettiParticles){
+    p.x += p.vx; p.y += p.vy; p.vy += 0.06; p.rot += p.spin;
+    confettiCtx.save();
+    confettiCtx.translate(p.x,p.y);
+    confettiCtx.rotate(p.rot);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+    confettiCtx.restore();
+  }
+  confettiParticles = confettiParticles.filter(p=>p.y < confettiCanvas.height + 50);
+  if(confettiParticles.length>0) requestAnimationFrame(confettiLoop);
+  else { confettiRunning = false; confettiCanvas.style.display='none'; }
+}
+
+/* Logs/toast */
+function showToast(msg, short=true){
+  const t = document.createElement('div'); t.className='toast'; t.textContent = msg;
+  Object.assign(t.style,{position:'fixed',left:'50%',transform:'translateX(-50%)',bottom:'30px',background:'linear-gradient(90deg,var(--fire1),var(--fire2))',color:'#021',padding:'10px 14px',borderRadius:'10px',zIndex:9999});
+  document.body.appendChild(t);
+  setTimeout(()=> t.remove(), short?2200:4200);
+}
+
+/* XP & badges */
+const BADGES = [
+  {id:'b_day3', title:'برونزي — 3 أيام', thresholdDays:3},
+  {id:'b_day7', title:'فضي — 7 أيام', thresholdDays:7},
+  {id:'b_day14', title:'ذهبي — 14 يوم', thresholdDays:14},
+  {id:'b_day30', title:'بلاطيني — 30 يوم', thresholdDays:30},
+  {id:'b_day100', title:'أسطوري — 100 يوم', thresholdDays:100}
+];
+
+function awardBadgeIfNeeded(days){
+  for(const b of BADGES){
+    if(days >= b.thresholdDays && !state.badges.includes(b.id)){
+      state.badges.push(b.id);
+      pushRewardLog('badge',{badgeId:b.id, title:b.title});
+      pushLog('badge_awarded', b.id);
+      saveState();
+      showCelebration(`وسام جديد: ${b.title}`, '');
+    }
+  }
+}
+function pushRewardLog(type, meta){ state.rewardLog = state.rewardLog || []; state.rewardLog.unshift({ts: now(), type, meta}); if(state.rewardLog.length>200) state.rewardLog.length=200; saveState(); }
+
+/* Milestones check (on tick) */
+function checkMilestones(){
+  if(!state.started || !state.startTime) return;
+  const elapsed = (state.paused ? state.pauseTime : now()) - state.startTime;
+  const d = friendlyDuration(elapsed).days;
+
+  // daily XP awarding (simple, once per day)
+  if(!state.lastXPGrantDate || (new Date(state.lastXPGrantDate).toDateString() !== new Date().toDateString())){
+    const elapsedHours = Math.floor(elapsed / (1000*60*60));
+    if(elapsedHours >= 1 || d>0){
+      const amount = state.xpPerDay || 10;
+      state.xp = (state.xp || 0) + amount;
+      state.lastXPGrantDate = now();
+      pushRewardLog('xp',{amount, reason:`مكافأة ${d} يوم`});
+      saveState();
+      // optional level up check handled in renderXP
+      showToast(`+${amount} XP — مكافأة يومية`);
+    }
+  }
+
+  // 3-day milestone
+  if(d >= 3 && !state.day3Shown){
+    state.day3Shown = true;
+    pushLog('milestone_day3');
+    saveState();
+    showCelebration('اليوم الثالث! 🔥', 'لقد بدأت تستعيد السيطرة على ذهنك -- أحسنت!');
+  }
+
+  // weekly milestones
+  const weekIndex = Math.floor(d/7);
+  if(weekIndex >=1 && !state.celebratedWeeks.includes(weekIndex)){
+    state.celebratedWeeks.push(weekIndex);
+    pushLog('milestone_week_'+weekIndex);
+    saveState();
+    showCelebration(`أسبوع نقاء! 🏅`, `لقد أكملت ${weekIndex*7} يومًا من النقاء -- استمر!`);
+  }
+
+  // badges
+  awardBadgeIfNeeded(d);
+}
+
+/* Restore logic */
+const RESTORE_WAIT_DAYS = 10;
+function daysSinceLastRelapse(){ return state.lastRelapse ? Math.floor((now() - state.lastRelapse)/(1000*60*60*24)) : Infinity; }
+function canRestoreNow(){
+  if((state.recoveriesLeft || 0) <= 0) return {ok:false, reason:'no-chances'};
+  if(!state.lastRelapse) return {ok:false, reason:'no-relapse'};
+  const daysSince = daysSinceLastRelapse();
+  if(daysSince < RESTORE_WAIT_DAYS) return {ok:false, reason:'wait', daysRemaining: RESTORE_WAIT_DAYS - daysSince};
+  return {ok:true};
+}
+function getNextRestoreDate(){
+  if(!state.lastRelapse) return null;
+  const next = new Date(state.lastRelapse + RESTORE_WAIT_DAYS*24*60*60*1000);
+  return next;
+}
+function updateRestoreUI(){
+  const btn = document.getElementById('btnRestore');
+  const info = document.getElementById('nextRestoreDate');
+  const can = canRestoreNow();
+  if(can.ok){
+    btn.classList.remove('disabled');
+    btn.disabled = false;
+    info.textContent = 'متاح الآن';
+  } else {
+    btn.classList.add('disabled');
+    btn.disabled = true;
+    if(can.reason==='no-chances'){ info.textContent = 'انتهت فرص الاستعادة' }
+    else if(can.reason==='no-relapse'){ info.textContent = '--' }
+    else if(can.reason==='wait'){
+      const next = getNextRestoreDate();
+      info.textContent = next ? next.toLocaleDateString() : '--';
+    } else info.textContent = '--';
+  }
+}
+function attemptOfferRestore(){
+  const can = canRestoreNow();
+  if(!can.ok){
+    if(can.reason==='no-chances'){ showToast('انتهت فرص استعادة الستريك'); return; }
+    if(can.reason==='wait'){ showToast(`لا يمكنك الاستعادة الآن. انتظر ${can.daysRemaining} يومًا.`); return; }
+    if(can.reason==='no-relapse'){ showToast('لا يوجد انتكاسة سابقة للاستعادة'); return; }
+    return;
+  }
+  if(!confirm(`هل تريد استعادة الستريك الآن؟ سيُخصم من فرص الاستعادة المتبقية (${state.recoveriesLeft}) وسيعود الستريك للبداية السابقة.`)) return;
+  state.recoveriesLeft = Math.max(0, (state.recoveriesLeft||0)-1);
+  const restoredStart = state.prevStartTime || (state.lastRelapse ? state.lastRelapse - 1*60*60*1000 : now());
+  state.startTime = restoredStart;
+  state.started = true;
+  state.paused = false;
+  state.pauseTime = null;
+  pushLog('restore', `recoveriesLeft=${state.recoveriesLeft}`);
+  saveState();
+  renderAll();
+  showCelebration('تم استعادة الستريك 🎉', 'لقد نهضت من الرماد — استمر!');
+}
+
+/* Start / Pause / Relapse */
+function startOrResume(){
+  if(!state.started){
+    state.started = true;
+    state.startTime = now();
+    state.prevStartTime = state.startTime;
+    state.paused = false;
+    state.pauseTime = null;
+    pushLog('start');
+    showToast('تم بدء التحدي -- بداية موفقة 👏');
+    saveState();
+    renderAll();
+    return;
+  }
+  if(state.paused){
+    state.paused = false;
+    const pausedDuration = now() - state.pauseTime;
+    state.startTime += pausedDuration;
+    state.pauseTime = null;
+    pushLog('resume');
+    showToast('تم استئناف التتبع');
+    saveState();
+    renderAll();
+    return;
+  }
+  showToast('أنت بالفعل في التحدي');
+}
+function togglePause(){
+  if(!state.started){ showToast('لم تبدأ التحدي بعد'); return; }
+  if(!state.paused){
+    state.paused = true;
+    state.pauseTime = now();
+    pushLog('pause');
+    showToast('تم إيقاف التتبع مؤقتًا');
+  } else {
+    startOrResume();
+    return;
+  }
+  saveState(); renderAll();
+}
+function confirmRelapse(){ if(!state.started){ showToast('لم تبدأ بعد'); return; } if(!confirm('تأكيد: هل أنت متأكد أنك تعرضت لانتكاسة؟ (سيُعاد الستريك إلى الصفر)')) return; handleRelapse(); }
+function handleRelapse(){
+  const relapseTs = now();
+  state.prevStartTime = state.startTime || state.prevStartTime;
+  pushLog('relapse');
+  state.relapseCount = (state.relapseCount||0) + 1;
+  state.lastRelapse = relapseTs;
+  if(state.prevStartTime){
+    const endTs = state.paused ? state.pauseTime : now();
+    const daysThis = Math.floor((endTs - state.prevStartTime)/(1000*60*60*24));
+    state.totalDaysAccum = (state.totalDaysAccum||0) + Math.max(0, daysThis);
+    if(daysThis > (state.bestStreakDays||0)) state.bestStreakDays = daysThis;
+  }
+  state.started = false;
+  state.startTime = null;
+  state.paused = false;
+  state.pauseTime = null;
+  saveState();
+  renderAll();
+  showToast('سجلت الانتكاسة — لا تقلق، يمكنك المحاولة مجددًا');
+}
+
+/* Goal / Tools */
+function setGoal(){ const g = prompt('اكتب هدف اليوم:', state.goal || ''); if(g===null) return; state.goal = g.trim(); pushLog('set_goal', state.goal); saveState(); renderAll(); }
+function clearGoal(){ state.goal=''; pushLog('clear_goal'); saveState(); renderAll(); }
+function doBreath(){ alert('تمارين تنفّس: تنفس 4 ثوانٍ -- احبس 4 ثوانٍ -- ازفر 4 ثوانٍ -- كرر 6 مرات.'); }
+function doDistract(){ alert('خطّة إلهاء: اخرج للمشي 5 دقائق، اشرب ماء، اكتب مهمة صغيرة وانجزها.'); }
+
+/* Quick mood / note */
+function saveQuickMood(){
+  const m = document.getElementById('quickMood').value;
+  if(!m){ showToast('اختر المزاج أولا'); return; }
+  const mem = { id:'m_'+Date.now(), ts:Date.now(), text:'حالة مزاجية سريعة', mood:m, tag:'مزاج', daysAtSave: state.started && state.startTime ? friendlyDuration(now()-state.startTime).days : 0 };
+  const arr = loadMemories(); arr.unshift(mem); saveMemories(arr); renderMemoriesList(); showToast('تم حفظ الحالة');
+}
+function saveQuickNote(){
+  const t = (document.getElementById('quickNote').value || '').trim();
+  if(!t){ showToast('اكتب ملاحظة قصيرة'); return; }
+  const mem = { id:'m_'+Date.now(), ts:Date.now(), text:t, mood:'neutral', tag:'ملاحظة', daysAtSave: state.started && state.startTime ? friendlyDuration(now()-state.startTime).days : 0 };
+  const arr = loadMemories(); arr.unshift(mem); saveMemories(arr); renderMemoriesList(); document.getElementById('quickNote').value=''; showToast('تم حفظ الملاحظة');
+}
+
+/* Memories (same as earlier) */
+function loadMemories(){ try{ return JSON.parse(localStorage.getItem(MEM_KEY) || '[]'); }catch(e){ return []; } }
+function saveMemories(arr){ try{ localStorage.setItem(MEM_KEY, JSON.stringify(arr)); }catch(e){console.error(e);} }
+function addMemory(){
+  const text = (document.getElementById('memText').value || '').trim();
+  const mood = document.getElementById('memMood').value;
+  const tag = (document.getElementById('memTag').value || '').trim();
+  if(!text){ showToast('اكتب محتوى الذكرى'); return; }
+  const m = { id: 'm_' + Date.now(), ts: Date.now(), text, mood, tag, daysAtSave: state.started && state.startTime ? friendlyDuration(now()-state.startTime).days : 0, type:'memory' };
+  const arr = loadMemories(); arr.unshift(m);
+  saveMemories(arr);
+  clearMemoryForm();
+  renderMemoriesList();
+  showToast('تم حفظ الذكرى');
+}
+function clearMemoryForm(){ document.getElementById('memText').value=''; document.getElementById('memTag').value=''; document.getElementById('memMood').value='neutral'; }
+function renderMemoriesList(){
+  const list = document.getElementById('memoriesList'); if(!list) return;
+  list.innerHTML='';
+  const arr = loadMemories();
+  if(arr.length===0){ list.innerHTML = '<div class="memory-item memory-empty">لا توجد ذكريات بعد</div>'; return; }
+  arr.forEach(m=>{
+    const el = document.createElement('div'); el.className='memory-item';
+    const d = new Date(m.ts).toLocaleString();
+    const moodClass = m.mood === 'happy' ? 'happy' : (m.mood==='sad' ? 'sad' : 'neutral');
+    el.innerHTML = `<div class="memory-meta">${d} — أيام الستريك وقت الحفظ: ${m.daysAtSave} <span class="mood ${moodClass}">${m.mood==='happy'?'😊 سعيد':m.mood==='sad'?'😔 حزين':'😐 محايد'}</span> ${m.tag?(' · '+m.tag):''}</div>
+      <div class="memory-text">${escapeHtml(m.text)}</div>
+      <div class="mem-actions">
+        <button class="btn btn-ghost" onclick="editMemory('${m.id}')">تعديل</button>
+        <button class="btn btn-ghost" onclick="deleteMemory('${m.id}')">حذف</button>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+function deleteMemory(id){ if(!confirm('هل تريد حذف هذه الذكرى؟')) return; let arr = loadMemories(); arr = arr.filter(x=>x.id!==id); saveMemories(arr); renderMemoriesList(); showToast('تم الحذف'); }
+function editMemory(id){
+  const arr = loadMemories(); const m = arr.find(x=>x.id===id); if(!m) return;
+  document.getElementById('memText').value = m.text;
+  document.getElementById('memTag').value = m.tag || '';
+  document.getElementById('memMood').value = m.mood || 'neutral';
+  deleteMemory(id);
+  showToast('قم بالتعديل ثم اضغط حفظ — سيتم استبدال الذكرى');
+}
+function createMomentMemory(){ const note = prompt('اكتب ملاحظة سريعة (سيتم حفظها مؤقتًا خلال الجلسة):',''); if(note===null || note.trim()==='') return; sessionStorage.setItem('cleanmind_moment_note', JSON.stringify({ts:Date.now(), text:note.trim(), days: state.started && state.startTime ? friendlyDuration(now()-state.startTime).days : 0})); showToast('تم حفظ الملاحظة اللحظية (جلسة الحالية)'); renderMomentMemory(); }
+function renderMomentMemory(){ const raw = sessionStorage.getItem('cleanmind_moment_note'); if(!raw) return; try{ const m = JSON.parse(raw); const list = document.getElementById('memoriesList'); if(list){ const tmp = document.createElement('div'); tmp.className='memory-item'; tmp.innerHTML = `<div class="memory-meta">ملاحظة لحظية — ${new Date(m.ts).toLocaleTimeString()} · أيام: ${m.days}</div><div class="memory-text">${escapeHtml(m.text)}</div><div style="margin-top:8px"><button class="btn btn-ghost" onclick="saveMomentToMemories()">حفظ كذكرى دائمة</button></div>`; list.insertBefore(tmp, list.firstChild); } }catch(e){} }
+function saveMomentToMemories(){ const raw = sessionStorage.getItem('cleanmind_moment_note'); if(!raw) return; try{ const m = JSON.parse(raw); const mem = { id:'m_'+Date.now(), ts:m.ts, text:m.text, mood:'neutral', tag:'لحظية', daysAtSave:m.days, type:'memory' }; const arr = loadMemories(); arr.unshift(mem); saveMemories(arr); sessionStorage.removeItem('cleanmind_moment_note'); renderMemoriesList(); showToast('تم حفظ الملاحظة كمذكرة'); }catch(e){} }
+function exportMemories(){ const arr = loadMemories(); const data = JSON.stringify(arr, null, 2); const blob = new Blob([data], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'cleanmind-memories.json'; a.click(); setTimeout(()=> URL.revokeObjectURL(url), 5000); showToast('تم إنشاء ملف التصدير'); }
+function importMemories(){ const input = document.createElement('input'); input.type='file'; input.accept='application/json'; input.onchange = e=>{ const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{ try{ const parsed = JSON.parse(ev.target.result); if(!Array.isArray(parsed)) { alert('ملف غير صالح'); return; } if(!confirm('هل تريد استيراد الذكريات وإضافتها للحالي؟ (لن يتم استبدال الحاضر)')) return; const arr = loadMemories(); const merged = parsed.concat(arr); saveMemories(merged); renderMemoriesList(); showToast('تم استيراد الذكريات'); }catch(err){ alert('خطأ في الملف'); console.error(err); } }; reader.readAsText(f); }; input.click(); }
+function clearAllMemories(){ if(!confirm('هل تريد مسح كل الذكريات؟ لا يمكن التراجع.')) return; saveMemories([]); renderMemoriesList(); showToast('تم مسح كل الذكريات'); }
+
+/* Ask-Coach (keyword) */
+function askCoach(){
+  const q = (document.getElementById('qaInput').value || '').trim(); if(!q){ showToast('اكتب سؤال أولًا'); return; }
+  const mem = { id:'q_'+Date.now(), ts:Date.now(), text:q, mood:'neutral', tag:'سؤال', daysAtSave: state.started ? friendlyDuration(now()-state.startTime).days : 0, type:'question' };
+  const arr = loadMemories(); arr.unshift(mem); saveMemories(arr); renderMemoriesList();
+
+  const lower = q.toLowerCase();
+  let resp = '';
+  if(lower.includes('كيف') || lower.includes('ماذا أفعل') || lower.includes('كيف أتعامل')){
+    resp = 'نصيحتي: غيّر البيئة — اخرج للمشي، اشرب ماء، اكتب مهمة قصيرة، وابدأ نشاط بديل 5 دقائق.';
+  } else if(lower.includes('لماذا') || lower.includes('سبب')){
+    resp = 'العادة قد تكون رد فعل لملل أو توتر. تحديد السبب يساعدك على التخطيط.';
+  } else if(lower.includes('استعادة') || lower.includes('استرجاع')){
+    resp = 'الاستعادة تحتاج شروط (انتظر + فرص متاحة). استخدمها بحكمة.';
+  } else if(lower.includes('نصيحة') || lower.includes('مساعدة')){
+    resp = 'ابدأ بخطوات صغيرة، اطلب دعم، وسجل تقدمك. كل يوم صغير إنجاز.';
+  } else {
+    resp = 'سؤالك تم حفظه — إجابة سريعة: جرّب تدوين الماحظة وما شعرت به ثم اتبع خطوة بديلة لمدة 5 دقائق.';
+  }
+
+  document.getElementById('qaResponse').textContent = resp;
+  document.getElementById('qaInput').value = '';
+  showToast('تم حفظ السؤال وأعطيت إجابة سريعة');
+}
+
+/* Escape helper */
+function escapeHtml(s){ return (s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* Render functions */
+function renderXP(){
+  const meta = document.getElementById('xpMeta');
+  const fill = document.getElementById('xpFill');
+  const xpNeeded = 100;
+  state.level = Math.max(1, Math.floor((state.xp||0)/xpNeeded) + 1);
+  const xpProgress = (state.xp||0) % xpNeeded;
+  const pct = (xpProgress / xpNeeded) * 100;
+  meta.textContent = `XP: ${state.xp || 0} • مستوى ${state.level}`;
+  fill.style.width = pct + '%';
+}
+function renderStats(){
+  document.getElementById('daysDisplay').textContent = state.started && state.startTime ? friendlyDuration((state.paused?state.pauseTime:now()) - state.startTime).days : 0;
+  document.getElementById('timeDisplay').textContent = state.started && state.startTime ? (()=>{const d=friendlyDuration((state.paused?state.pauseTime:now())-state.startTime); return `${d.days} يوم • ${String(d.hours).padStart(2,'0')}:${String(d.minutes).padStart(2,'0')}:${String(d.seconds).padStart(2,'0')}`} )() : 'لم تبدأ بعد';
+  document.getElementById('statCurrent').textContent = state.started ? friendlyDuration((state.paused?state.pauseTime:now()) - state.startTime).days : 0;
+  document.getElementById('statBest').textContent = state.bestStreakDays || 0;
+  document.getElementById('statTotal').textContent = (state.totalDaysAccum || 0) + (state.started ? friendlyDuration((state.paused?state.pauseTime:now()) - state.startTime).days : 0);
+  document.getElementById('statRelapses').textContent = state.relapseCount || 0;
+  document.getElementById('recoveriesLeft').textContent = state.recoveriesLeft || 0;
+  updateRestoreUI();
+}
+function updateHeaderName(){
+  const headerName = document.getElementById('headerName');
+  const headerTitle = document.getElementById('headerTitle');
+  headerName.textContent = state.userName ? state.userName : 'بك';
+  const days = state.started && state.startTime ? friendlyDuration((state.paused?state.pauseTime:now()) - state.startTime).days : 0;
+  const r = getRankByDays(state.bestStreakDays || days);
+  headerTitle.textContent = r ? '· ' + r.title : '';
+  document.getElementById('welcomeTitle').textContent = state.userName ? `مرحبًا يا ${state.userName}` : 'مرحبًا بك في رحلة Clean Mind';
+}
+function renderBadges(){
+  const bl = document.getElementById('badgeList'); bl.innerHTML = '';
+  (state.badges || []).forEach(bid=>{
+    const badge = document.createElement('div'); badge.className='badge earned';
+    const found = {b_day3:'برونزي — 3 أيام', b_day7:'فضي — 7 أيام', b_day30:'بلاطيني — 30 يوم', b_day100:'أسطوري — 100 يوم'}[bid] || 'وسام';
+    badge.textContent = found;
+    bl.appendChild(badge);
+  });
+}
+function renderRanks(){
+  const grid = document.getElementById('ranksGrid');
+  const currentRankBox = document.getElementById('currentRankBox');
+  grid.innerHTML = ''; currentRankBox.innerHTML = '';
+  const days = state.started ? friendlyDuration((state.paused?state.pauseTime:now()) - state.startTime).days : 0;
+  const currentRank = getRankByDays(days);
+  currentRankBox.innerHTML = `<div style="padding:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px"><div style="font-size:14px;color:var(--muted)">لقبك الحالي</div><div style="font-weight:800;font-size:18px;margin-top:6px">${currentRank.title}</div><div style="color:var(--muted);margin-top:6px">${currentRank.desc}</div></div>`;
+  RANKS.forEach(r=>{
+    const card = document.createElement('div'); card.className='rank-card'; if(r.id===currentRank.id) card.classList.add('highlight');
+    card.innerHTML = `<div style="font-weight:800">${r.title}</div><div style="color:var(--muted);margin-top:6px">من ${r.min} يوم</div><div style="margin-top:6px;color:var(--muted)">${r.desc}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* Tabs */
+let currentTab = 'challenge';
+function showTab(tab){
+  currentTab = tab;
+  ['challenge','ranks','stats','memories','settings','guide'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return; el.style.display = (id===tab)?'block':'none';
+  });
+  ['navChallenge','navRanks','navStats','navMemories','navSettings','navGuide'].forEach(id=>{
+    const btn = document.getElementById(id); if(!btn) return; const map = {navChallenge:'challenge', navRanks:'ranks', navStats:'stats', navMemories:'memories', navSettings:'settings', navGuide:'guide'}; btn.classList.toggle('active', map[id]===tab);
+  });
+  renderAll();
+}
+
+/* Visit popup */
+function showVisitPopupIfNeeded(){ try{ const val = localStorage.getItem(VISIT_KEY); if(val === 'hidden') return; }catch(e){} const modal = document.getElementById('visitModal'); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+function hideVisitPopup(){ const modal=document.getElementById('visitModal'); modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+function skipVisitPopup(){ hideVisitPopup(); showTab('challenge'); }
+function dontShowPopupAgain(){ localStorage.setItem(VISIT_KEY,'hidden'); hideVisitPopup(); showTab('challenge'); }
+function saveNameFromPopup(){ const v = (document.getElementById('nameField').value || '').trim(); if(!v){ showToast('اكتب اسم علشان أحفظه'); return; } state.userName = v; saveNameLocal(v); pushLog('set_name', v); hideVisitPopup(); showTab('guide'); renderAll(); }
+
+/* Guide quiz */
+const guideQuestions = [
+  {q: "إيه أكتر حاجة بتخوفك إنك تخسر التحدي؟", a:["الندم","إني أبدأ من الصفر","خسارة ثقتي بنفسي"], m:["كل خطوة بتقوّيك.","البدايات جزء من الطريق.","ثقتك بتزيد كل مرة تقوم فيها."]},
+  {q: "إيه السبب اللي خلاك تبدأ؟", a:["أثبت لنفسي","أتحسن","أتخلص من عادة"], m:["النية دي قوة حقيقية.","التحسن رحلة مستمرة.","كل يوم صغير إنجاز كبير."]},
+  {q: "إيه إحساسك لما بتكسب نفسك يوم جديد؟", a:["فخر","راحة","قوة"], m:["الفخر هو وقود الاستمرار.","الراحة مكافأة جديرة.","القوة دي بتكبر مع كل يوم."]}
+];
+function startGuideQuiz(){
+  document.getElementById('guideQuizArea').style.display='block';
+  loadGuideQuestion();
+}
+function loadGuideQuestion(){
+  const idx = Math.floor(Math.random()*guideQuestions.length); const q = guideQuestions[idx];
+  document.getElementById('gQuestion').textContent = q.q;
+  const answers = document.getElementById('gAnswers'); answers.innerHTML='';
+  document.getElementById('gMessage').textContent='';
+  q.a.forEach((ans,i)=>{ const btn = document.createElement('button'); btn.className='btn btn-ghost'; btn.textContent = ans; btn.onclick = ()=> { document.getElementById('gMessage').textContent = q.m[i]; }; answers.appendChild(btn); });
+}
+function finishGuide(){ showToast('تم إنهاء الإرشاد — بالتوفيق في التحدي!'); showTab('challenge'); }
+
+/* Celebration */
+function showCelebration(title, text){
+  document.getElementById('celebrationTitle').textContent = title || 'تهانينا!';
+  document.getElementById('celebrationText').textContent = text || '';
+  const modal=document.getElementById('celebrationModal'); modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+  spawnConfetti(90);
+  setTimeout(()=> closeCelebration(), 5500);
+}
+function closeCelebration(){ const m=document.getElementById('celebrationModal'); m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+
+/* Settings: theme */
+function setTheme(t){
+  if(t==='pink'){ document.documentElement.style.setProperty('--fire1','#ff80ab'); document.documentElement.style.setProperty('--fire2','#ff3d9a'); showToast('تم تغيير النسق للوردي'); }
+  else if(t==='dark'){ document.documentElement.style.setProperty('--fire1','#2e2e3a'); document.documentElement.style.setProperty('--fire2','#44475a'); showToast('تم تغيير النسق للداكن'); }
+  else { document.documentElement.style.setProperty('--fire1','#ff5f3d'); document.documentElement.style.setProperty('--fire2','#ff9a3d'); showToast('تم العودة للنسق الافتراضي'); }
+}
+
+/* Logo upload handling */
+const logoUploadEl = document.getElementById('logoUpload');
+const logoPreview = document.getElementById('logoPreview');
+const logoEl = document.getElementById('logoEl');
+
+logoUploadEl.addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev=>{
+    // show preview
+    logoPreview.style.backgroundImage = `url(${ev.target.result})`;
+    logoPreview.textContent = '';
+    // keep the data in a temp place until user clicks apply
+    logoPreview.dataset.pending = ev.target.result;
+    showToast('تم تحميل الصورة (اضغط "استخدام الشعار")');
+  };
+  r.readAsDataURL(f);
+});
+
+function applyUploadedLogo(){
+  const data = logoPreview.dataset.pending;
+  if(!data){ showToast('اختر صورة أولًا'); return; }
+  try{ localStorage.setItem(LOGO_KEY, data); }catch(e){ console.error(e); }
+  setLogoFromStorage();
+  showToast('تم تطبيق الشعار');
+}
+function setLogoFromStorage(){
+  const v = localStorage.getItem(LOGO_KEY);
+  if(v){ logoEl.style.backgroundImage = `url(${v})`; logoEl.textContent=''; logoPreview.style.backgroundImage = `url(${v})`; logoPreview.textContent=''; }
+  else { logoEl.style.backgroundImage = ''; logoEl.textContent = 'CM'; logoPreview.style.backgroundImage=''; logoPreview.textContent='CM'; }
+}
+function removeLogo(){ localStorage.removeItem(LOGO_KEY); logoPreview.dataset.pending=''; setLogoFromStorage(); showToast('تم استعادة الشعار الافتراضي'); }
+
+/* Export/Import full data */
+function exportAllData(){
+  const payload = { state, memories: loadMemories(), logo: localStorage.getItem(LOGO_KEY) || null, name: localStorage.getItem(NAME_KEY) || '' };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download = 'cleanmind-full-export.json'; a.click(); setTimeout(()=> URL.revokeObjectURL(url), 5000);
+  showToast('تم إنشاء ملف التصدير');
+}
+function importAllData(){
+  const input = document.createElement('input'); input.type='file'; input.accept='application/json'; input.onchange = e=>{
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader(); r.onload = ev=>{
+      try{
+        const parsed = JSON.parse(ev.target.result);
+        if(!parsed.state || !parsed.memories){ if(!confirm('الملف لا يبدو مطابقاً بالكامل — هل تريد محاولة استيراد بعض البيانات؟')) return; }
+        if(parsed.state) { state = {...DEFAULT, ...parsed.state}; saveState(); }
+        if(Array.isArray(parsed.memories)) { saveMemories(parsed.memories); }
+        if(parsed.logo) try{ localStorage.setItem(LOGO_KEY, parsed.logo); }catch(e){}
+        if(parsed.name) saveNameLocal(parsed.name);
+        setLogoFromStorage();
+        renderAll();
+        showToast('تم استيراد البيانات (قد تحتاج تحديث الصفحة)');
+      }catch(err){ alert('خطأ في الملف'); console.error(err); }
+    }; r.readAsText(f);
+  }; input.click();
+}
+
+/* Reset all */
+function resetAll(){ if(!confirm('هل تريد إعادة ضبط كل شيء (سيمسح السجل والبيانات المخزنة محليًا)؟')) return; localStorage.removeItem(KEY); localStorage.removeItem(NAME_KEY); localStorage.removeItem(MEM_KEY); localStorage.removeItem(LOGO_KEY); state = {...DEFAULT}; state.userName=''; saveState(); renderAll(); setLogoFromStorage(); showToast('تم إعادة الضبط'); }
+
+/* Misc: logs */
+function pushLog(action, meta=''){ state.logs = state.logs || []; state.logs.unshift({ts:Date.now(), action, meta}); if(state.logs.length>400) state.logs.length=400; saveState(); }
+
+/* Render everything */
+function renderAll(){ updateHeaderName(); renderXP(); renderStats(); renderBadges(); renderMemoriesList(); renderRanks(); setLogoFromStorage(); }
+
+/* detect clock tamper (basic) */
+function detectClockTamper(){
+  const last = state.lastTick || Date.now();
+  const nowTs = Date.now();
+  if(nowTs + 5000 < last){
+    showToast('تم الكشف عن تغيير في ساعة الجهاز. العدّاد مؤقتًا موقوف.', false);
+    state.paused = true;
+    state.pauseTime = nowTs;
+    saveState();
+    renderAll();
+  }
+}
+
+/* interval tick (updates timer + milestones + notifications) */
+setInterval(()=>{
+  detectClockTamper();
+  // update render
+  renderAll();
+  checkMilestones();
+  scheduleNotificationsTick();
+}, 1000);
+
+/* Notifications schedule simple */
+function scheduleNotificationsTick(){
+  if(!state.notifEnabled) return;
+  const [h,m] = (state.notifTime || '08:00').split(':').map(x=>parseInt(x,10));
+  const nowD = new Date();
+  if(nowD.getHours()===h && nowD.getMinutes()===m){
+    const key = `${nowD.getFullYear()}-${nowD.getMonth()+1}-${nowD.getDate()}_${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    if(state.lastNotifKey !== key){
+      if(Notification.permission==='granted') new Notification('Clean Mind', {body:'تذكير: حافظ على ذهنك اليوم -- خطوة صغيرة الآن.'});
+      state.lastNotifKey = key; saveState();
+    }
+  }
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderAll();
+  // show visit popup if no name
+  if(!state.userName) showVisitPopupIfNeeded();
+  // set logo preview from storage
+  setLogoFromStorage();
+  // small intro celebration if appropriate
+  if(state.bestStreakDays && state.bestStreakDays >= 7){
+    setTimeout(()=>{ spawnConfetti(70); showCelebration('أسبوع رائع!','تقدم مستمر — أحسنت!'); }, 800);
+  }
+});
+
+/* Expose some helpers for dev console */
+window._cm = { state, renderAll, loadMemories, saveMemories, addMemory, deleteMemory, exportAllData };
+
+</script>
+</body>
+</html>
